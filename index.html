@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <header class="container-fluid bg-dark text-white p-4 text-center">
+      <h1>RSS READER</h1>
+    </header>
+    <main class="flex-grow-1">
+      <section class="container-fluid bg-dark text-white p-4">
+        <form action class="row p-4 justify-content-center g-4">
+          <div class="col-auto w-50">
+            <label for="rss-input" class="visually-hidden">RSS link</label>
+            <input
+              name="rss-input"
+              type="text"
+              autofocus
+              class="form-control form-control-lg text-body-tertiary"
+              placeholder="RSS link"
+            />
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary btn-lg px-4">Add</button>
+          </div>
+        </form>
+      </section>
+      <section id="rss-feed" class="container-fluid bg-white p-4"></section>
+    </main>
+    <footer class="footer p-2 bg-light border-top text-body-tertiary fixed-bottom">
+      <p class="text-center fs-3 m-0">foxxdogg</p>
+    </footer>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
