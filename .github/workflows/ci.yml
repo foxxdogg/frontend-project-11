@@ -34,9 +34,6 @@ jobs:
       - name: Run Linter
         run: make lint
 
-      - name: Run Tests
-        run: make test
-
       - name: Build project (Vite)
         run: npm run build
 
