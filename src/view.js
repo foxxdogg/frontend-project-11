@@ -1,26 +1,28 @@
 import onChange from 'on-change'
 import state from './state.js'
 
-const input = document.querySelector('input')
+export function initView() {
+  const input = document.querySelector('input')
+  const form = document.querySelector('form')
 
-input.addEventListener('input', () => {
-  if (input.value === '') {
-    watchedState.rssForm.status = 'initial'
-  }
-})
-
-const watchedState = onChange(state, function (path, value) {
-  if (path === 'rssForm.status') {
-    if (value === 'invalid') {
-      input.classList.add('is-invalid')
-    }
-    else {
-      input.classList.remove('is-invalid')
+  input.addEventListener('input', () => {
+    if (input.value === '') {
       watchedState.rssForm.status = 'initial'
-      input.value = ''
-      input.focus()
     }
-  }
-})
+  })
 
-export { watchedState, input }
+  const watchedState = onChange(state, function (path, value) {
+    if (path === 'rssForm.status') {
+      if (value === 'invalid') {
+        input.classList.add('is-invalid')
+      }
+      else {
+        input.classList.remove('is-invalid')
+        watchedState.rssForm.status = 'initial'
+        input.value = ''
+        input.focus()
+      }
+    }
+  })
+  return { watchedState, input, form }
+}

@@ -1,9 +1,9 @@
 import './style.css'
 import * as yup from 'yup'
-import { watchedState, input } from './view.js'
+import { initView } from './view.js'
 import state from './state.js'
 
-const form = document.querySelector('form')
+const { watchedState, input, form } = initView()
 form.addEventListener('submit', (e) => {
   e.preventDefault()
   validateForm(input.value, state.rssForm.feeds)
