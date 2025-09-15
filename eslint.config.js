@@ -12,9 +12,9 @@ export default defineConfig([
     extends: ['js/recommended'],
   },
   { files: ['**/*.{js,mjs,cjs}'], languageOptions: { globals: globals.node } },
+  { languageOptions: { globals: pluginJest.environments.globals.globals } },
   {
-    languageOptions: {
-      globals: pluginJest.environments.globals.globals,
-    },
+    files: ['src/**/*.js'],
+    languageOptions: { globals: globals.browser },
   },
 ])
