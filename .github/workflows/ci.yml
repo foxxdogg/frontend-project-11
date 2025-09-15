@@ -29,10 +29,10 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: make install
+        run: npm ci
 
       - name: Run Linter
-        run: make lint
+        run: npm run lint
 
       - name: Build project (Vite)
         run: npm run build
