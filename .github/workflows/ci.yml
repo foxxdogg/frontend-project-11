@@ -43,5 +43,7 @@ jobs:
           args: >
             -Dsonar.projectKey=foxxdogg_frontend-project-11
             -Dsonar.organization=foxxdogg
+            -Dsonar.sources=src
+            -Dsonar.coverage.exclusions=**/*
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
