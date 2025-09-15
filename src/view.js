@@ -2,6 +2,9 @@ import onChange from 'on-change'
 import state from './state.js'
 
 export function initView() {
+  if (typeof document === 'undefined') {
+    return { watchedState: null, input: null, form: null }
+  }
   const input = document.querySelector('input')
   const form = document.querySelector('form')
 
