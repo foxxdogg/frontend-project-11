@@ -1,0 +1,14 @@
+{
+  "translation": {
+    "header": "ЧИТАЛКА RSS",
+    "form": {
+      "button": "Добавить",
+      "placeholder": "RSS-ссылка",
+      "errors": {
+        "required": "Это поле обязательно для заполнения",
+        "notUnique": "RSS-ссылка должна быть уникальной",
+        "invalidUrl": "URL должен быть корректным"
+      }
+    }
+  }
+}

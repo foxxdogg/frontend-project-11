@@ -7,11 +7,11 @@
   </head>
   <body>
     <div id="app"></div>
-    <header class="container-fluid bg-secondary text-white p-4 text-center">
-      <h1>RSS READER</h1>
+    <header class="container-fluid bg-dark text-white p-4 text-center">
+      <h1></h1>
     </header>
     <main class="flex-grow-1">
-      <section class="container-fluid bg-secondary text-white p-4">
+      <section class="container-fluid bg-dark text-white p-4">
         <form action class="row p-4 justify-content-center g-4">
           <div class="col-auto w-50">
             <label for="rss-input" class="visually-hidden">RSS link</label>
@@ -20,9 +20,9 @@
               type="text"
               autofocus
               class="form-control form-control-lg text-body-tertiary"
-              placeholder="RSS link"
               autocomplete="off"
             />
+            <p class="feedback small text-danger mt-1"></p>
           </div>
           <div class="col-auto">
             <button type="submit" class="btn btn-primary btn-lg px-4">Add</button>

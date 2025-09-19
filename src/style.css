@@ -11,3 +11,7 @@
 .form-control::placeholder {
   color: #6c757d;
 }
+
+.feedback {
+  position: absolute;
+}

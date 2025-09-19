@@ -1,0 +1,14 @@
+{
+  "translation": {
+    "header": "RSS READER",
+    "form": {
+      "button": "Add",
+      "placeholder": "RSS-link",
+      "errors": {
+        "required": "This is a required field",
+        "notUnique": "RSS-link must be unique",
+        "invalidUrl": "This must be a valid URL"
+      }
+    }
+  }
+}

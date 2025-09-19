@@ -1,6 +1,7 @@
 const state = {
   rssForm: {
     status: 'initial',
+    error: '',
     feeds: [],
   },
 }
