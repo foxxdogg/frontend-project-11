@@ -4,6 +4,8 @@ import { initView } from './view.js'
 import { state, parseRssFromDataUrl, parseDoc } from './state.js'
 import axios from 'axios'
 
+export { state } from './state.js'
+
 const { watchedState, input, form } = initView()
 form.addEventListener('submit', (e) => {
   e.preventDefault()
@@ -18,7 +20,7 @@ form.addEventListener('submit', (e) => {
       return axios.get(proxy + url)
     })
     .then((response) => {
-      if (!response.data || !response.data.contents) {
+      if (!response.data?.contents) {
         throw new Error('RSS feed not available')
       }
       const rssString = response.data.contents
@@ -63,11 +65,7 @@ function validateForm(link, links) {
       if (links.includes(value)) {
         return createError({ path, params: { code: 'notUnique' } })
       }
-      else {
-        return true
-      }
+      return true
     })
     .validate(link)
 }
-
-export { state }

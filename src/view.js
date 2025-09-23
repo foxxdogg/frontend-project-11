@@ -76,69 +76,70 @@ function initView() {
     if (path === 'rssForm.error') {
       feedback.classList.remove('text-success')
       feedback.classList.add('text-danger')
-      feedback.textContent = i18nextInstance.t(`form.errors.${value}`)
+      const errorCode = typeof value === 'string' ? value : value.code
+      feedback.textContent = i18nextInstance.t(`form.errors.${errorCode}`)
     }
 
     if (path === 'feeds') {
-      renderFeeds()
+      renderFeeds(watchedState.feeds)
     }
 
     if (path === 'posts') {
-      renderPosts()
-    }
-
-    function renderFeeds() {
-      const feedsContainer = document.querySelector('.feeds')
-      feedsContainer.innerHTML = ''
-      const feedsHeader = document.createElement('h2')
-      feedsHeader.textContent = i18nextInstance.t(`feeds`)
-      feedsContainer.append(feedsHeader)
-      watchedState.feeds.forEach((feed) => {
-        const title = document.createElement('h4')
-        title.textContent = feed.title
-        feedsContainer.append(title)
-        const description = document.createElement('p')
-        description.textContent = feed.description
-        feedsContainer.append(description)
-        console.log(feed)
-      })
-    }
-
-    function renderPosts() {
-      const postsContainer = document.querySelector('.posts')
-      postsContainer.innerHTML = ''
-      const postsHeader = document.createElement('h2')
-      postsHeader.textContent = i18nextInstance.t(`posts`)
-      postsHeader.classList.add('text-start')
-      postsHeader.style.paddingLeft = '12px'
-      postsContainer.append(postsHeader)
-      const list = document.createElement('ul')
-      list.classList.add('list-group', 'list-group-flush')
-      postsContainer.append(list)
-      watchedState.posts.forEach((post) => {
-        const listItem = document.createElement('li')
-        listItem.classList.add(
-          'list-group-item',
-          'd-flex',
-          'justify-content-between',
-          'align-items-start',
-        )
-        const link = document.createElement('a')
-        link.textContent = post.title
-        link.href = post.link
-        listItem.append(link)
-        const viewButton = document.createElement('button')
-        viewButton.classList.add('btn', 'btn-sm', 'btn-outline-primary')
-        viewButton.type = 'button'
-        viewButton.textContent = i18nextInstance.t(`button`)
-        listItem.append(viewButton)
-        list.append(listItem)
-        console.log(post)
-      })
+      renderPosts(watchedState.posts)
     }
   })
 
   return { watchedState, input, form }
+}
+
+function renderPosts(posts) {
+  const postsContainer = document.querySelector('.posts')
+  postsContainer.innerHTML = ''
+  const postsHeader = document.createElement('h2')
+  postsHeader.textContent = i18nextInstance.t(`posts`)
+  postsHeader.classList.add('text-start')
+  postsHeader.style.paddingLeft = '12px'
+  postsContainer.append(postsHeader)
+  const list = document.createElement('ul')
+  list.classList.add('list-group', 'list-group-flush')
+  postsContainer.append(list)
+  posts.forEach((post) => {
+    const listItem = document.createElement('li')
+    listItem.classList.add(
+      'list-group-item',
+      'd-flex',
+      'justify-content-between',
+      'align-items-start',
+    )
+    const link = document.createElement('a')
+    link.textContent = post.title
+    link.href = post.link
+    listItem.append(link)
+    const viewButton = document.createElement('button')
+    viewButton.classList.add('btn', 'btn-sm', 'btn-outline-primary')
+    viewButton.type = 'button'
+    viewButton.textContent = i18nextInstance.t(`button`)
+    listItem.append(viewButton)
+    list.append(listItem)
+    console.log(post)
+  })
+}
+
+function renderFeeds(feeds) {
+  const feedsContainer = document.querySelector('.feeds')
+  feedsContainer.innerHTML = ''
+  const feedsHeader = document.createElement('h2')
+  feedsHeader.textContent = i18nextInstance.t(`feeds`)
+  feedsContainer.append(feedsHeader)
+  feeds.forEach((feed) => {
+    const title = document.createElement('h4')
+    title.textContent = feed.title
+    feedsContainer.append(title)
+    const description = document.createElement('p')
+    description.textContent = feed.description
+    feedsContainer.append(description)
+    console.log(feed)
+  })
 }
 
 export { initView }
