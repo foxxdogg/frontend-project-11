@@ -103,7 +103,7 @@ function renderPosts(posts) {
   const list = document.createElement('ul')
   list.classList.add('list-group', 'list-group-flush')
   postsContainer.append(list)
-  posts.forEach((post) => {
+  for (let post of posts) {
     const listItem = document.createElement('li')
     listItem.classList.add(
       'list-group-item',
@@ -122,7 +122,7 @@ function renderPosts(posts) {
     listItem.append(viewButton)
     list.append(listItem)
     console.log(post)
-  })
+  }
 }
 
 function renderFeeds(feeds) {
@@ -131,7 +131,7 @@ function renderFeeds(feeds) {
   const feedsHeader = document.createElement('h2')
   feedsHeader.textContent = i18nextInstance.t(`feeds`)
   feedsContainer.append(feedsHeader)
-  feeds.forEach((feed) => {
+  for (let feed of feeds) {
     const title = document.createElement('h4')
     title.textContent = feed.title
     feedsContainer.append(title)
@@ -139,7 +139,7 @@ function renderFeeds(feeds) {
     description.textContent = feed.description
     feedsContainer.append(description)
     console.log(feed)
-  })
+  }
 }
 
 export { initView }
