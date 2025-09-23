@@ -1,14 +1,21 @@
 {
   "translation": {
-    "header": "ЧИТАЛКА RSS",
+    "header": "АГРЕГАТОР RSS",
     "form": {
       "button": "Добавить",
       "placeholder": "RSS-ссылка",
+      "example": "Пример: https://lorem-rss.hexlet.app/feed",
+      "successMessage": "RSS успешно загружен",
       "errors": {
         "required": "Это поле обязательно для заполнения",
         "notUnique": "RSS-ссылка должна быть уникальной",
-        "invalidUrl": "URL должен быть корректным"
+        "invalidUrl": "URL должен быть корректным",
+        "networkError": "Не удалось загрузить RSS-канал",
+        "parseError": "Ошибка парсинга RSS"
       }
-    }
+    },
+    "posts": "Посты",
+    "feeds": "Каналы",
+    "button": "Просмотр"
   }
 }

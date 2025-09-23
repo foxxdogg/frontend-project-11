@@ -22,16 +22,22 @@
               class="form-control form-control-lg text-body-tertiary"
               autocomplete="off"
             />
-            <p class="feedback small text-danger mt-1"></p>
+            <p class="example mt-1 text-secondary"></p>
+            <p class="feedback small mt-1"></p>
           </div>
           <div class="col-auto">
             <button type="submit" class="btn btn-primary btn-lg px-4">Add</button>
           </div>
         </form>
       </section>
-      <section id="rss-feed" class="container-fluid bg-white p-4"></section>
+      <section id="rss-feed" class="container-fluid container-xxl p-4">
+        <div class="row">
+          <div class="posts col-7"></div>
+          <div class="feeds col-5"></div>
+        </div>
+      </section>
     </main>
-    <footer class="footer p-3 bg-light border-top text-body-tertiary fixed-bottom">
+    <footer class="footer p-3 bg-light border-top text-body-tertiary">
       <p class="text-center fs-3 m-0">foxxdogg</p>
     </footer>
     <script type="module" src="/src/main.js"></script>

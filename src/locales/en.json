@@ -4,11 +4,18 @@
     "form": {
       "button": "Add",
       "placeholder": "RSS-link",
+      "example": "Example: https://lorem-rss.hexlet.app/feed",
+      "successMessage": "RSS successfully loaded",
       "errors": {
         "required": "This is a required field",
         "notUnique": "RSS-link must be unique",
-        "invalidUrl": "This must be a valid URL"
+        "invalidUrl": "This must be a valid URL",
+        "networkError": "Cannot load RSS feed",
+        "parseError": "RSS parsing error"
       }
-    }
+    },
+    "posts": "Posts",
+    "feeds": "Feeds",
+    "button": "View"
   }
 }
