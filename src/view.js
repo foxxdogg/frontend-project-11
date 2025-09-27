@@ -1,5 +1,6 @@
 import onChange from 'on-change'
 import { state } from './state.js'
+import { watchedState } from './main.js'
 import en from './locales/en.json'
 import ru from './locales/ru.json'
 import i18next from 'i18next'
@@ -85,44 +86,16 @@ function initView() {
     }
 
     if (path === 'posts') {
-      renderPosts(watchedState.posts)
+      const postsContainer = document.querySelector('.posts')
+      if (!postsContainer.querySelector('ul')) renderPostsContainer()
+      const list = postsContainer.querySelector('ul')
+      const existingLinks = Array.from(list.querySelectorAll('a')).map(a => a.href)
+      value.forEach((post) => {
+        if (!existingLinks.includes(post.link)) addSinglePost(post)
+      })
     }
   })
-
   return { watchedState, input, form }
-}
-
-function renderPosts(posts) {
-  const postsContainer = document.querySelector('.posts')
-  postsContainer.innerHTML = ''
-  const postsHeader = document.createElement('h2')
-  postsHeader.textContent = i18nextInstance.t(`posts`)
-  postsHeader.classList.add('text-start')
-  postsHeader.style.paddingLeft = '12px'
-  postsContainer.append(postsHeader)
-  const list = document.createElement('ul')
-  list.classList.add('list-group', 'list-group-flush')
-  postsContainer.append(list)
-  for (let post of posts) {
-    const listItem = document.createElement('li')
-    listItem.classList.add(
-      'list-group-item',
-      'd-flex',
-      'justify-content-between',
-      'align-items-start',
-    )
-    const link = document.createElement('a')
-    link.textContent = post.title
-    link.href = post.link
-    listItem.append(link)
-    const viewButton = document.createElement('button')
-    viewButton.classList.add('btn', 'btn-sm', 'btn-outline-primary')
-    viewButton.type = 'button'
-    viewButton.textContent = i18nextInstance.t(`button`)
-    listItem.append(viewButton)
-    list.append(listItem)
-    console.log(post)
-  }
 }
 
 function renderFeeds(feeds) {
@@ -138,7 +111,59 @@ function renderFeeds(feeds) {
     const description = document.createElement('p')
     description.textContent = feed.description
     feedsContainer.append(description)
-    console.log(feed)
+  }
+}
+
+function renderPostsContainer() {
+  const postsContainer = document.querySelector('.posts')
+  if (!postsContainer.querySelector('h2')) {
+    const postsHeader = document.createElement('h2')
+    postsHeader.textContent = i18nextInstance.t('posts')
+    postsHeader.style.paddingLeft = '12px'
+    postsContainer.append(postsHeader)
+  }
+  if (!postsContainer.querySelector('ul')) {
+    const list = document.createElement('ul')
+    list.classList.add('list-group', 'list-group-flush')
+    postsContainer.append(list)
+  }
+}
+
+function addSinglePost(post) {
+  const postsContainer = document.querySelector('.posts')
+  let list = postsContainer.querySelector('ul')
+  if (!list) {
+    renderPostsContainer()
+    list = postsContainer.querySelector('ul')
+  }
+  const listItem = document.createElement('li')
+  listItem.classList.add(
+    'list-group-item',
+    'd-flex',
+    'justify-content-between',
+    'align-items-start',
+  )
+  const link = document.createElement('a')
+  link.textContent = post.title
+  link.href = post.link
+  listItem.append(link)
+  const viewButton = document.createElement('button')
+  viewButton.classList.add('btn', 'btn-sm', 'btn-outline-primary')
+  viewButton.type = 'button'
+  viewButton.textContent = i18nextInstance.t(`button`)
+  listItem.append(viewButton)
+
+  const items = Array.from(list.querySelectorAll('li'))
+  const existing = items.find((li) => {
+    const a = li.querySelector('a')
+    const existingDate = new Date(watchedState.posts.find(p => p.link === a.href)?.pubDate || 0)
+    return new Date(post.pubDate) > existingDate
+  })
+  if (existing) {
+    list.insertBefore(listItem, existing)
+  }
+  else {
+    list.append(listItem)
   }
 }
 

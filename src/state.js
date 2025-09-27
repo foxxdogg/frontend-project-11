@@ -32,6 +32,9 @@ function parseDoc(doc) {
   const posts = Array.from(items).map(item => ({
     title: item.querySelector('title').textContent,
     link: item.querySelector('link').textContent,
+    pubDate: item.querySelector('pubDate')
+      ? new Date(item.querySelector('pubDate').textContent).toISOString()
+      : new Date().toISOString(),
     feedId: feed.id,
     postId: _.uniqueId(),
   }))
