@@ -1,6 +1,5 @@
 import onChange from 'on-change'
 import { state } from './state.js'
-import { watchedState } from './main.js'
 import en from './locales/en.json'
 import ru from './locales/ru.json'
 import i18next from 'i18next'
@@ -89,10 +88,10 @@ function initView() {
       const postsContainer = document.querySelector('.posts')
       if (!postsContainer.querySelector('ul')) renderPostsContainer()
       const list = postsContainer.querySelector('ul')
-      const existingLinks = Array.from(list.querySelectorAll('a')).map(a => a.href)
-      value.forEach((post) => {
-        if (!existingLinks.includes(post.link)) addSinglePost(post)
-      })
+      const existingLinks = new Set(Array.from(list.querySelectorAll('a')).map(a => a.href))
+      for (let post of value) {
+        if (!existingLinks.has(post.link)) addSinglePost(post, watchedState)
+      }
     }
   })
   return { watchedState, input, form }
@@ -129,7 +128,7 @@ function renderPostsContainer() {
   }
 }
 
-function addSinglePost(post) {
+function addSinglePost(post, state) {
   const postsContainer = document.querySelector('.posts')
   let list = postsContainer.querySelector('ul')
   if (!list) {
@@ -156,11 +155,11 @@ function addSinglePost(post) {
   const items = Array.from(list.querySelectorAll('li'))
   const existing = items.find((li) => {
     const a = li.querySelector('a')
-    const existingDate = new Date(watchedState.posts.find(p => p.link === a.href)?.pubDate || 0)
+    const existingDate = new Date(state.posts.find(p => p.link === a.href)?.pubDate || 0)
     return new Date(post.pubDate) > existingDate
   })
   if (existing) {
-    list.insertBefore(listItem, existing)
+    existing.before(listItem)
   }
   else {
     list.append(listItem)

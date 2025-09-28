@@ -4,9 +4,11 @@ import { initView } from './view.js'
 import { state, parseRssFromDataUrl, parseDoc } from './state.js'
 import axios from 'axios'
 
-export { state } from './state.js'
-
 const { watchedState, input, form } = initView()
+if (watchedState.rssForm.links.length > 0) {
+  updatePosts()
+}
+
 form.addEventListener('submit', (e) => {
   e.preventDefault()
   validateForm(input.value, state.rssForm.links)
@@ -29,7 +31,9 @@ form.addEventListener('submit', (e) => {
     .then((doc) => {
       const { feed, posts } = parseDoc(doc)
       watchedState.feeds.push(feed)
-      posts.forEach(post => watchedState.posts.push(post))
+      for (const post of posts) {
+        watchedState.posts.push(post)
+      }
       watchedState.rssForm.status = 'success'
     })
     .then(() => updatePosts())
@@ -66,13 +70,16 @@ function updatePosts() {
         return parseRssFromDataUrl(rssString)
       })
       .then((doc) => {
+        console.log(1)
         const { posts } = parseDoc(doc)
         const updatedPosts = [...posts]
-        const oldPosts = JSON.parse(JSON.stringify(watchedState.posts))
+        const oldPosts = structuredClone(posts)
         const newPosts = updatedPosts.filter(
           updatedPost => !oldPosts.some(oldPost => updatedPost.link === oldPost.link),
         )
-        newPosts.forEach(post => watchedState.posts.push(post))
+        for (const post of newPosts) {
+          watchedState.posts.push(post)
+        }
 
         watchedState.posts.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
       })
@@ -98,4 +105,4 @@ function validateForm(link, links) {
     .validate(link)
 }
 
-export { updatePosts, watchedState }
+export { updatePosts }
