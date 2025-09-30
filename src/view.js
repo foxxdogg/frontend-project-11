@@ -34,7 +34,7 @@ function initView() {
   const header = document.querySelector('h1')
   header.textContent = i18nextInstance.t('header')
 
-  const button = document.querySelector('button')
+  const button = document.querySelector('button[type="submit"]')
   button.textContent = i18nextInstance.t('form.button')
 
   const input = document.querySelector('input')
@@ -143,14 +143,49 @@ function addSinglePost(post, state) {
     'align-items-start',
   )
   const link = document.createElement('a')
+  link.classList.add(post.read ? 'fw-normal' : 'fw-bold')
+  if (post.read) {
+    link.classList.add('link-secondary')
+  }
   link.textContent = post.title
   link.href = post.link
+  link.target = '_blank'
   listItem.append(link)
+
   const viewButton = document.createElement('button')
   viewButton.classList.add('btn', 'btn-sm', 'btn-outline-primary')
   viewButton.type = 'button'
   viewButton.textContent = i18nextInstance.t(`button`)
+  viewButton.setAttribute('data-bs-toggle', 'modal')
+  viewButton.setAttribute('data-bs-target', '#exampleModal')
   listItem.append(viewButton)
+
+  const modalEl = document.getElementById('exampleModal')
+
+  link.addEventListener('click', () => {
+    post.read = true
+    link.classList.remove('fw-bold')
+    link.classList.add('fw-normal', 'link-secondary')
+  })
+
+  viewButton.addEventListener('click', () => {
+    post.read = true
+    const linkEl = Array.from(document.querySelectorAll('.posts a')).find(
+      a => a.href === post.link,
+    )
+    linkEl.classList.remove('fw-bold')
+    linkEl.classList.add('fw-normal', 'link-secondary')
+
+    const modalTitle = document.querySelector('#exampleModal .modal-title')
+    const modalBody = document.querySelector('#exampleModal .modal-body')
+    modalTitle.textContent = post.title
+    modalBody.textContent = post.description
+
+    const readMoreBtn = modalEl.querySelector('.btn-primary')
+    if (readMoreBtn) {
+      readMoreBtn.onclick = () => window.open(post.link, '_blank')
+    }
+  })
 
   const items = Array.from(list.querySelectorAll('li'))
   const existing = items.find((li) => {

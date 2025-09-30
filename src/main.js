@@ -3,6 +3,7 @@ import * as yup from 'yup'
 import { initView } from './view.js'
 import { state, parseRssFromDataUrl, parseDoc } from './state.js'
 import axios from 'axios'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 const { watchedState, input, form } = initView()
 if (watchedState.rssForm.links.length > 0) {
@@ -80,7 +81,6 @@ function updatePosts() {
         for (const post of newPosts) {
           watchedState.posts.push(post)
         }
-
         watchedState.posts.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
       })
       .catch((e) => {

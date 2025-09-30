@@ -31,12 +31,14 @@ function parseDoc(doc) {
   const items = channel.querySelectorAll('item')
   const posts = Array.from(items).map(item => ({
     title: item.querySelector('title').textContent,
+    description: item.querySelector('description').textContent,
     link: item.querySelector('link').textContent,
     pubDate: item.querySelector('pubDate')
       ? new Date(item.querySelector('pubDate').textContent).toISOString()
       : new Date().toISOString(),
     feedId: feed.id,
     postId: _.uniqueId(),
+    read: false,
   }))
   return { feed, posts }
 }
