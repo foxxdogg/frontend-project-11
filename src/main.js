@@ -92,8 +92,8 @@ function updatePosts() {
         }
         watchedState.posts.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
       })
-      .catch((e) => {
-        console.log(e.message)
+      .catch((err) => {
+        console.log(err.message)
       })
   }
   setTimeout(updatePosts, 5000)
