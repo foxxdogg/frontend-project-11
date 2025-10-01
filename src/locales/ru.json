@@ -7,11 +7,11 @@
       "example": "Пример: https://lorem-rss.hexlet.app/feed",
       "successMessage": "RSS успешно загружен",
       "errors": {
-        "required": "Это поле обязательно для заполнения",
-        "notUnique": "RSS-ссылка должна быть уникальной",
-        "invalidUrl": "URL должен быть корректным",
-        "networkError": "Не удалось загрузить RSS-канал",
-        "parseError": "Ошибка парсинга RSS"
+        "required": "Не должно быть пустым",
+        "notUnique": "RSS уже существует",
+        "invalidUrl": "Ссылка должна быть валидным URL",
+        "networkError": "Ошибка сети",
+        "parseError": "Ресурс не содержит валидный RSS"
       }
     },
     "posts": "Посты",

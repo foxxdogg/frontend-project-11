@@ -1,14 +1,17 @@
 import './style.css'
 import * as yup from 'yup'
 import { initView } from './view.js'
-import { state, parseRssFromDataUrl, parseDoc } from './state.js'
+import { state, parseRssFromDataUrl, parseDoc, selectPost } from './state.js'
 import axios from 'axios'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
-const { watchedState, input, form } = initView()
+const { watchedState } = initView()
 if (watchedState.rssForm.links.length > 0) {
   updatePosts()
 }
+const form = document.querySelector('form')
+const input = document.querySelector('input')
+const posts = document.querySelector('.posts')
 
 form.addEventListener('submit', (e) => {
   e.preventDefault()
@@ -17,7 +20,6 @@ form.addEventListener('submit', (e) => {
       const link = input.value
       watchedState.rssForm.status = 'valid'
       watchedState.rssForm.links.push(link)
-
       const proxy = 'https://api.allorigins.win/get?disableCache=true&url='
       const url = encodeURIComponent(link)
       return axios.get(proxy + url)
@@ -37,7 +39,6 @@ form.addEventListener('submit', (e) => {
       }
       watchedState.rssForm.status = 'success'
     })
-    .then(() => updatePosts())
     .catch((e) => {
       if (e.name === 'ValidationError') {
         const code = e.params?.code || e.message?.code || 'unknown'
@@ -61,6 +62,17 @@ input.addEventListener('input', () => {
   }
 })
 
+posts.addEventListener('click', (e) => {
+  if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') {
+    const id = e.target.id
+    const index = watchedState.posts.findIndex(post => post.postId === id)
+    watchedState.posts[index].read = true
+  }
+  if (e.target.tagName === 'BUTTON') {
+    selectPost(watchedState, e.target.id)
+  }
+})
+
 function updatePosts() {
   const proxy = 'https://api.allorigins.win/get?disableCache=true&url='
   for (const link of watchedState.rssForm.links) {
@@ -71,12 +83,9 @@ function updatePosts() {
         return parseRssFromDataUrl(rssString)
       })
       .then((doc) => {
-        console.log(1)
         const { posts } = parseDoc(doc)
-        const updatedPosts = [...posts]
-        const oldPosts = structuredClone(posts)
-        const newPosts = updatedPosts.filter(
-          updatedPost => !oldPosts.some(oldPost => updatedPost.link === oldPost.link),
+        const newPosts = posts.filter(
+          post => !watchedState.posts.some(oldPost => oldPost.link === post.link),
         )
         for (const post of newPosts) {
           watchedState.posts.push(post)

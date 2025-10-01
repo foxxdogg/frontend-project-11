@@ -43,4 +43,11 @@ function parseDoc(doc) {
   return { feed, posts }
 }
 
-export { state, parseRssFromDataUrl, parseDoc }
+function selectPost(state, postId) {
+  const post = state.posts.find(p => p.postId === postId)
+  if (post) {
+    state.selectedPost = post
+  }
+}
+
+export { state, parseRssFromDataUrl, parseDoc, selectPost }

@@ -4,11 +4,12 @@ import en from './locales/en.json'
 import ru from './locales/ru.json'
 import i18next from 'i18next'
 import * as yup from 'yup'
+import { updatePosts } from './main.js'
 
 const i18nextInstance = i18next.createInstance()
 i18nextInstance
   .init({
-    lng: 'en',
+    lng: 'ru',
     resources: {
       en,
       ru,
@@ -49,52 +50,88 @@ function initView() {
   example.textContent = i18nextInstance.t('form.example')
 
   const watchedState = onChange(state, function (path, value) {
-    if (path === 'rssForm.status') {
-      if (value === 'invalid') {
-        input.classList.add('is-invalid')
-      }
-      else if (value === 'initial') {
-        input.classList.remove('is-invalid')
-        input.value = ''
-        input.focus()
-        feedback.classList.remove('text-danger', 'text-success')
-        feedback.textContent = ''
-      }
-      else if (value === 'success') {
-        input.classList.remove('is-invalid')
-        input.value = ''
-        input.focus()
-        feedback.classList.remove('text-danger')
-        feedback.classList.add('text-success')
-        feedback.textContent = i18nextInstance.t('form.successMessage')
-      }
-      else if (value === 'valid') {
-        input.classList.remove('is-invalid')
-        feedback.textContent = ''
-      }
-    }
-    if (path === 'rssForm.error') {
-      feedback.classList.remove('text-success')
-      feedback.classList.add('text-danger')
-      const errorCode = typeof value === 'string' ? value : value.code
-      feedback.textContent = i18nextInstance.t(`form.errors.${errorCode}`)
-    }
-
-    if (path === 'feeds') {
-      renderFeeds(watchedState.feeds)
-    }
-
-    if (path === 'posts') {
-      const postsContainer = document.querySelector('.posts')
-      if (!postsContainer.querySelector('ul')) renderPostsContainer()
-      const list = postsContainer.querySelector('ul')
-      const existingLinks = new Set(Array.from(list.querySelectorAll('a')).map(a => a.href))
-      for (let post of value) {
-        if (!existingLinks.has(post.link)) addSinglePost(post, watchedState)
-      }
+    switch (path) {
+      case 'rssForm.status':
+        handleStatusChange(value, input, feedback)
+        break
+      case 'rssForm.error':
+        handleErrorChange(value, feedback)
+        break
+      case 'feeds':
+        handleFeedsChange(watchedState.feeds)
+        break
+      case 'posts':
+        handlePostsChange(value, watchedState)
+        break
+      case 'selectedPost':
+        handleSelectedPostChange(value)
+        break
+      default:
+        if (path.startsWith('posts.')) {
+          handlePostStatusChange(path, watchedState)
+        }
+        break
     }
   })
   return { watchedState, input, form }
+}
+
+function handlePostStatusChange(path, state) {
+  const [posts, index] = path.split('.')
+  const linkEl = Array.from(document.querySelectorAll('.posts a')).find(
+    a => a.href === state[posts][index].link,
+  )
+  linkEl.classList.remove('fw-bold')
+  linkEl.classList.add('fw-normal', 'link-secondary')
+}
+
+function handleStatusChange(value, input, feedback) {
+  switch (value) {
+    case 'invalid':
+      input.classList.add('is-invalid')
+      break
+    case 'initial':
+      input.classList.remove('is-invalid')
+      input.value = ''
+      input.focus()
+      feedback.classList.remove('text-danger', 'text-success')
+      feedback.textContent = ''
+      break
+    case 'success':
+      input.classList.remove('is-invalid')
+      input.value = ''
+      input.focus()
+      feedback.classList.remove('text-danger')
+      feedback.classList.add('text-success')
+      feedback.textContent = i18nextInstance.t('form.successMessage')
+      break
+    case 'valid':
+      input.classList.remove('is-invalid')
+      feedback.textContent = ''
+      updatePosts()
+      break
+  }
+}
+
+function handleErrorChange(value, feedback) {
+  feedback.classList.remove('text-success')
+  feedback.classList.add('text-danger')
+  const errorCode = typeof value === 'string' ? value : value.code
+  feedback.textContent = i18nextInstance.t(`form.errors.${errorCode}`)
+}
+
+function handleFeedsChange(feeds) {
+  renderFeeds(feeds)
+}
+
+function handlePostsChange(value, state) {
+  const postsContainer = document.querySelector('.posts')
+  if (!postsContainer.querySelector('ul')) renderPostsContainer()
+  const list = postsContainer.querySelector('ul')
+  const existingLinks = new Set(Array.from(list.querySelectorAll('a')).map(a => a.href))
+  for (let post of value) {
+    if (!existingLinks.has(post.link)) addSinglePost(post, state)
+  }
 }
 
 function renderFeeds(feeds) {
@@ -128,6 +165,19 @@ function renderPostsContainer() {
   }
 }
 
+function handleSelectedPostChange(post) {
+  const modalEl = document.getElementById('exampleModal')
+  const modalTitle = document.querySelector('#exampleModal .modal-title')
+  const modalBody = document.querySelector('#exampleModal .modal-body')
+  modalTitle.textContent = post.title
+  modalBody.textContent = post.description
+
+  const readMoreBtn = modalEl.querySelector('.btn-primary')
+  if (readMoreBtn) {
+    readMoreBtn.onclick = () => window.open(post.link, '_blank')
+  }
+}
+
 function addSinglePost(post, state) {
   const postsContainer = document.querySelector('.posts')
   let list = postsContainer.querySelector('ul')
@@ -149,6 +199,7 @@ function addSinglePost(post, state) {
   }
   link.textContent = post.title
   link.href = post.link
+  link.id = post.postId
   link.target = '_blank'
   listItem.append(link)
 
@@ -156,36 +207,10 @@ function addSinglePost(post, state) {
   viewButton.classList.add('btn', 'btn-sm', 'btn-outline-primary')
   viewButton.type = 'button'
   viewButton.textContent = i18nextInstance.t(`button`)
-  viewButton.setAttribute('data-bs-toggle', 'modal')
-  viewButton.setAttribute('data-bs-target', '#exampleModal')
+  viewButton.dataset.bsToggle = 'modal'
+  viewButton.dataset.bsTarget = '#exampleModal'
+  viewButton.id = post.postId
   listItem.append(viewButton)
-
-  const modalEl = document.getElementById('exampleModal')
-
-  link.addEventListener('click', () => {
-    post.read = true
-    link.classList.remove('fw-bold')
-    link.classList.add('fw-normal', 'link-secondary')
-  })
-
-  viewButton.addEventListener('click', () => {
-    post.read = true
-    const linkEl = Array.from(document.querySelectorAll('.posts a')).find(
-      a => a.href === post.link,
-    )
-    linkEl.classList.remove('fw-bold')
-    linkEl.classList.add('fw-normal', 'link-secondary')
-
-    const modalTitle = document.querySelector('#exampleModal .modal-title')
-    const modalBody = document.querySelector('#exampleModal .modal-body')
-    modalTitle.textContent = post.title
-    modalBody.textContent = post.description
-
-    const readMoreBtn = modalEl.querySelector('.btn-primary')
-    if (readMoreBtn) {
-      readMoreBtn.onclick = () => window.open(post.link, '_blank')
-    }
-  })
 
   const items = Array.from(list.querySelectorAll('li'))
   const existing = items.find((li) => {
