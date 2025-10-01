@@ -16,6 +16,10 @@
     },
     "posts": "Посты",
     "feeds": "Каналы",
-    "button": "Просмотр"
+    "button": "Просмотр",
+    "modal": {
+      "closeBtn": "Закрыть",
+      "readMoreButton": "Читать далее"
+    }
   }
 }

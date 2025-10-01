@@ -173,7 +173,11 @@ function handleSelectedPostChange(post) {
   modalTitle.textContent = post.title
   modalBody.textContent = post.description
 
+  const closeButton = modalEl.querySelector('.btn-secondary')
+  closeButton.textContent = i18nextInstance.t('modal.closeBtn')
+
   const readMoreBtn = modalEl.querySelector('.btn-primary')
+  readMoreBtn.textContent = i18nextInstance.t('modal.readMoreButton')
   if (readMoreBtn) {
     readMoreBtn.onclick = () => window.open(post.link, '_blank')
   }

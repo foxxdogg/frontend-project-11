@@ -16,6 +16,10 @@
     },
     "posts": "Posts",
     "feeds": "Feeds",
-    "button": "View"
+    "button": "View",
+    "modal": {
+      "closeBtn": "Close",
+      "readMoreButton": "Read More"
+    }
   }
 }
