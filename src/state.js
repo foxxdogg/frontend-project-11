@@ -10,9 +10,7 @@ const state = {
   posts: [],
 }
 
-function parseRssFromDataUrl(dataUrl) {
-  const base64 = dataUrl.split(',')[1]
-  const xmlString = atob(base64)
+function parseRssFromDataUrl(xmlString) {
   const parser = new DOMParser()
   const doc = parser.parseFromString(xmlString, 'application/xml')
   if (doc.querySelector('parsererror')) {
