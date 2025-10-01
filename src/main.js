@@ -20,7 +20,7 @@ form.addEventListener('submit', (e) => {
       const link = input.value
       watchedState.rssForm.status = 'valid'
       watchedState.rssForm.links.push(link)
-      const proxy = 'https://api.allorigins.win/get?disableCache=true&url='
+      const proxy = 'https://allorigins.hexlet.app/get?disableCache=true&url='
       const url = encodeURIComponent(link)
       return axios.get(proxy + url)
     })
@@ -74,7 +74,7 @@ posts.addEventListener('click', (e) => {
 })
 
 function updatePosts() {
-  const proxy = 'https://api.allorigins.win/get?disableCache=true&url='
+  const proxy = 'https://allorigins.hexlet.app/get?disableCache=true&url='
   for (const link of watchedState.rssForm.links) {
     axios
       .get(proxy + link)
