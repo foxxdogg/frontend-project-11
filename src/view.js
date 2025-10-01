@@ -104,6 +104,7 @@ function handleStatusChange(value, input, feedback) {
       feedback.classList.remove('text-danger')
       feedback.classList.add('text-success')
       feedback.textContent = i18nextInstance.t('form.successMessage')
+      updatePosts()
       break
     case 'valid':
       input.classList.remove('is-invalid')
