@@ -1,9 +1,10 @@
 import './style.css'
 import * as yup from 'yup'
 import { initView } from './view.js'
-import { state, parseRssFromDataUrl, parseDoc, selectPost } from './state.js'
+import { state, selectPost } from './state.js'
 import axios from 'axios'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import { parseRssFromDataUrl, parseDoc } from './parser.js'
 
 const { watchedState } = initView()
 if (watchedState.rssForm.links.length > 0) {

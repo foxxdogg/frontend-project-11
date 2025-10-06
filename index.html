@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-100">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +9,7 @@
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body class="h-100 d-flex flex-column">
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -38,7 +38,7 @@
       <section class="container-fluid bg-dark text-white p-4">
         <form action class="row p-4 justify-content-center g-4">
           <div class="col-auto w-50">
-            <label for="rss-input" class="visually-hidden">RSS link</label>
+            <label for="rss-input" class="visually-hidden text-muted">RSS link</label>
             <input
               aria-label="url"
               id="rss-input"
@@ -49,7 +49,7 @@
               autocomplete="off"
             />
             <p class="example mt-1 text-secondary"></p>
-            <p class="feedback small mt-1"></p>
+            <p class="feedback position-absolute small mt-1"></p>
           </div>
           <div class="col-auto">
             <button type="submit" class="btn btn-primary btn-lg px-4">Add</button>
@@ -58,8 +58,8 @@
       </section>
       <section id="rss-feed" class="container-fluid container-xxl p-4">
         <div class="row">
-          <div class="posts col-7"></div>
-          <div class="feeds col-5"></div>
+          <div class="posts col-12 col-lg-7 order-2 order-lg-1"></div>
+          <div class="feeds ol-12 col-lg-5 order-1 order-lg-2"></div>
         </div>
       </section>
     </main>

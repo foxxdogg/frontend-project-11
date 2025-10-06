@@ -196,6 +196,7 @@ function addSinglePost(post, state) {
     'd-flex',
     'justify-content-between',
     'align-items-start',
+    'border-0',
   )
   const link = document.createElement('a')
   link.classList.add(post.read ? 'fw-normal' : 'fw-bold')
