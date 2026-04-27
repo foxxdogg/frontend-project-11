@@ -23,6 +23,10 @@
 
 ## 📸 Демонстрация работы
 
+<p align="center">
+  <video src="[ВАША_ССЫЛКА_НА_ВИДЕО](https://github.com/user-attachments/assets/65300c3e-5dce-4398-a700-6070530d9295)" width="100%" controls></video>
+</p>
+
 ---
 Автор: [foxxdogg](https://github.com)
 
