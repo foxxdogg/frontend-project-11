@@ -24,7 +24,7 @@
 ## 📸 Демонстрация работы
 
 <p align="center">
-  <video src="https://github.com/user-attachments/assets/65300c3e-5dce-4398-a700-6070530d9295" width="100%" controls></video>
+  <video src="https://github.com/user-attachments/assets/65300c3e-5dce-4398-a700-6070530d9295" width="100%" controls loop></video>
 </p>
 
 ---
